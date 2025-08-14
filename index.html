@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>生词本</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      gap: 20px;
+    }
+
+    nav {
+      width: 150px;
+    }
+
+    nav a {
+      display: block;
+      margin-bottom: 5px;
+      text-decoration: none;
+      color: #0077cc;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin-bottom: 40px;
+      width: 100%;
+    }
+
+    th,
+    td {
+      border: 1px solid #ccc;
+      padding: 5px 10px;
+      text-align: left;
+    }
+
+    th {
+      background: #f5f5f5;
+    }
+
+    button {
+      padding: 4px 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav id="nav"></nav>
+
+  <div id="tables"></div>
+
+  <script>
+    let vocabulary_list = {
+      "数字": [
+        { word: 'zero', phonetic: '/ˈzɪəroʊ/', meaning: '零' },
+        { word: 'one', phonetic: '/wʌn/', meaning: '一' },
+        { word: 'two', phonetic: '/tuː/', meaning: '二' },
+        { word: 'three', phonetic: '/θriː/', meaning: '三' },
+        { word: 'four', phonetic: '/fɔːr/', meaning: '四' },
+        { word: 'five', phonetic: '/faɪv/', meaning: '五' },
+        { word: 'six', phonetic: '/sɪks/', meaning: '六' },
+        { word: 'seven', phonetic: '/ˈsev.ən/', meaning: '七' },
+        { word: 'eight', phonetic: '/eɪt/', meaning: '八' },
+        { word: 'nine', phonetic: '/naɪn/', meaning: '九' },
+        { word: 'ten', phonetic: '/ten/', meaning: '十' },
+        { word: 'eleven', phonetic: '/ɪˈlev.ən/', meaning: '十一' },
+        { word: 'twelve', phonetic: '/twelv/', meaning: '十二' },
+        { word: 'thirteen', phonetic: '/ˌθɜːrˈtiːn/', meaning: '十三' },
+        { word: 'fourteen', phonetic: '/ˌfɔːrˈtiːn/', meaning: '十四' },
+        { word: 'fifteen', phonetic: '/ˌfɪfˈtiːn/', meaning: '十五' },
+        { word: 'sixteen', phonetic: '/ˌsɪksˈtiːn/', meaning: '十六' },
+        { word: 'seventeen', phonetic: '/ˌsev.ənˈtiːn/', meaning: '十七' },
+        { word: 'eighteen', phonetic: '/ˌeɪˈtiːn/', meaning: '十八' },
+        { word: 'nineteen', phonetic: '/ˌnaɪnˈtiːn/', meaning: '十九' },
+        { word: 'twenty', phonetic: '/ˈtwenti/', meaning: '二十' }
+      ],
+      "序号": [
+        { word: 'first', phonetic: '/fɜːrst/', meaning: '第一' },
+        { word: 'second', phonetic: '/ˈsek.ənd/', meaning: '第二' },
+        { word: 'third', phonetic: '/θɜːrd/', meaning: '第三' },
+        { word: 'fourth', phonetic: '/fɔːrθ/', meaning: '第四' },
+        { word: 'fifth', phonetic: '/fɪfθ/', meaning: '第五' },
+        { word: 'sixth', phonetic: '/sɪksθ/', meaning: '第六' },
+        { word: 'seventh', phonetic: '/ˈsev.ənθ/', meaning: '第七' },
+        { word: 'eighth', phonetic: '/eɪtθ/', meaning: '第八' },
+        { word: 'ninth', phonetic: '/naɪnθ/', meaning: '第九' },
+        { word: 'tenth', phonetic: '/tenθ/', meaning: '第十' },
+        { word: 'eleventh', phonetic: '/ɪˈlev.ənθ/', meaning: '第十一' },
+        { word: 'twelfth', phonetic: '/twelfθ/', meaning: '第十二' },
+        { word: 'thirteenth', phonetic: '/ˌθɜːrˈtiːnθ/', meaning: '第十三' },
+        { word: 'fourteenth', phonetic: '/ˌfɔːrˈtiːnθ/', meaning: '第十四' },
+        { word: 'fifteenth', phonetic: '/ˌfɪfˈtiːnθ/', meaning: '第十五' },
+        { word: 'sixteenth', phonetic: '/ˌsɪksˈtiːnθ/', meaning: '第十六' },
+        { word: 'seventeenth', phonetic: '/ˌsev.ənˈtiːnθ/', meaning: '第十七' },
+        { word: 'eighteenth', phonetic: '/ˌeɪˈtiːnθ/', meaning: '第十八' },
+        { word: 'nineteenth', phonetic: '/ˌnaɪnˈtiːnθ/', meaning: '第十九' },
+        { word: 'twentieth', phonetic: '/ˈtwentiəθ/', meaning: '第二十' }
+      ],
+      "星期": [
+        { word: 'Monday', phonetic: '/ˈmʌn.deɪ/', meaning: '星期一' },
+        { word: 'Tuesday', phonetic: '/ˈtjuːz.deɪ/', meaning: '星期二' },
+        { word: 'Wednesday', phonetic: '/ˈwenz.deɪ/', meaning: '星期三' },
+        { word: 'Thursday', phonetic: '/ˈθɜːrz.deɪ/', meaning: '星期四' },
+        { word: 'Friday', phonetic: '/ˈfraɪ.deɪ/', meaning: '星期五' },
+        { word: 'Saturday', phonetic: '/ˈsæt.ɚ.deɪ/', meaning: '星期六' },
+        { word: 'Sunday', phonetic: '/ˈsʌn.deɪ/', meaning: '星期日' }
+      ],
+      "月份": [
+        { word: 'January', phonetic: '/ˈdʒæn.ju.er.i/', meaning: '一月' },
+        { word: 'February', phonetic: '/ˈfeb.ruː.er.i/', meaning: '二月' },
+        { word: 'March', phonetic: '/mɑːrtʃ/', meaning: '三月' },
+        { word: 'April', phonetic: '/ˈeɪ.prəl/', meaning: '四月' },
+        { word: 'May', phonetic: '/meɪ/', meaning: '五月' },
+        { word: 'June', phonetic: '/dʒuːn/', meaning: '六月' },
+        { word: 'July', phonetic: '/dʒʊˈlaɪ/', meaning: '七月' },
+        { word: 'August', phonetic: '/ˈɔː.ɡəst/', meaning: '八月' },
+        { word: 'September', phonetic: '/sɛpˈtɛm.bɚ/', meaning: '九月' },
+        { word: 'October', phonetic: '/ɑkˈtoʊ.bɚ/', meaning: '十月' },
+        { word: 'November', phonetic: '/noʊˈvɛm.bɚ/', meaning: '十一月' },
+        { word: 'December', phonetic: '/dɪˈsɛm.bɚ/', meaning: '十二月' }
+      ],
+      "季节": [
+        { word: 'Spring', phonetic: '/sprɪŋ/', meaning: '春天' },
+        { word: 'Summer', phonetic: '/ˈsʌm.ɚ/', meaning: '夏天' },
+        { word: 'Autumn', phonetic: '/ˈɔː.təm/', meaning: '秋天' },
+        { word: 'Winter', phonetic: '/ˈwɪn.tər/', meaning: '冬天' }
+      ],
+      "易混词": [
+        { word: "dictionary", phonetic: "/ˈdɪkʃəˌnɛri/", meaning: "词典，字典" },
+        { word: "directory", phonetic: "/dəˈrɛktəri/", meaning: "目录，文件夹" },
+        { word: "direction", phonetic: "/dəˈrɛkʃən/ 或 /daɪˈrɛkʃən/", meaning: "方向，指示" }
+      ]
+    };
+
+    const nav = document.getElementById('nav');
+    const tablesDiv = document.getElementById('tables');
+
+    // 生成导航
+    for (let category in vocabulary_list)
+    {
+      const a = document.createElement('a');
+      a.href = `#${category}`;
+      a.textContent = category;
+      nav.appendChild(a);
+    }
+
+    // 生成表格
+    for (let category in vocabulary_list)
+    {
+      const h2 = document.createElement('h2');
+      h2.id = category;
+      h2.textContent = category;
+      tablesDiv.appendChild(h2);
+
+      const table = document.createElement('table');
+      const thead = document.createElement('thead');
+      thead.innerHTML = `<tr><th>单词 / 音标</th><th>释义</th><th>朗读</th></tr>`;
+      table.appendChild(thead);
+
+      const tbody = document.createElement('tbody');
+      vocabulary_list[category].forEach(item =>
+      {
+        const tr = document.createElement('tr');
+
+        // 单词 + 音标
+        const tdWord = document.createElement('td');
+        tdWord.innerHTML = `${item.word} <span style="color:#0077cc">${item.phonetic}</span>`;
+        tr.appendChild(tdWord);
+
+        // 释义
+        const tdMeaning = document.createElement('td');
+        tdMeaning.textContent = item.meaning;
+        tr.appendChild(tdMeaning);
+
+        // 朗读
+        const tdSpeak = document.createElement('td');
+        const btn = document.createElement('button');
+        btn.textContent = '🔊';
+        btn.addEventListener('click', () =>
+        {
+          const utter = new SpeechSynthesisUtterance(item.word);
+          utter.lang = 'en-US';
+          speechSynthesis.speak(utter);
+        });
+        tdSpeak.appendChild(btn);
+        tr.appendChild(tdSpeak);
+
+        tbody.appendChild(tr);
+      });
+
+      table.appendChild(tbody);
+      tablesDiv.appendChild(table);
+    }
+  </script>
+
+</body>
+
+</html>
